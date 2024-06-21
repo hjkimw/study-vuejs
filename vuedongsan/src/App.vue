@@ -1,19 +1,18 @@
 <template>
   <div class="container">
+    <div class="menu">
+      <!-- vue의 HTML 반복문 : <태그 v-for="(순회 요소, index) in 반복 횟수 || 순회할 자료형 데이터" :key="key값"> -->
+      <a v-for="(item, index) in menuList" :key="index" href="#">{{ item }}, {{ index }}</a>
+    </div>
+
     <img src="@assets/vue.svg" alt="vue logo" />
 
     <div class="wrap">
       <h2>원룸샵</h2>
-      <!-- 
-      HTML 속성도 데이터바인딩 가능, 속성 왼쪽엔 :을 넣으면 됨, 모든 HTML 속성 가능(id, class, src, alt ..)
-      ex) :속성="데이터 이름"
-    -->
-      <h4 :style="fontColor">{{ products[0].room }}</h4>
-      <p>{{ products[0].price }} 만원</p>
-      <h4 :style="fontColor">{{ products[1].room }}</h4>
-      <p>{{ products[1].price }} 만원</p>
-      <h4 :style="fontColor">{{ products[2].room }}</h4>
-      <p>{{ products[2].price }} 만원</p>
+      <div v-for="({ room, price }, i) in products" :key="i">
+        <h4 :style="fontColor">{{ room }}</h4>
+        <p>{{ price }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -28,6 +27,7 @@ export default {
   // 데이터 보관함
   data() {
     return {
+      menuList: ['Home', 'shop', 'About'],
       fontColor: 'color: blue',
       products: [
         { room: '역삼동 원룸', price: 50 },
@@ -44,6 +44,17 @@ export default {
   max-width: fit-content;
   margin: 0 auto;
   text-align: center;
+
+  .menu {
+    background-color: darkslateblue;
+    padding: 15px;
+    border-radius: 5px;
+
+    & > a {
+      color: #fff;
+      padding: 10px;
+    }
+  }
 
   .wrap {
     margin-top: 10px;
