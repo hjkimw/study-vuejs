@@ -1,0 +1,55 @@
+@import 'fonts', 'variables';
+
+@mixin absoluteCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin headLine($color) {
+  background-color: $color;
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+}
+
+@mixin defaultSet {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  color: $dark-black;
+  line-height: 1.6em;
+}
+
+$notice-btn-fs: 14px;
+
+@mixin noticeBtn($color) {
+  padding: 10px 20px;
+  border-radius: 20px;
+  background: transparent;
+  transition: all 0.2s;
+  color: $color;
+  font-size: $notice-btn-fs;
+
+  &:hover {
+    color: $white;
+  }
+
+  &.com:hover {
+    background: $tomato;
+  }
+  &.post:hover {
+    background: $orange;
+  }
+  &.error:hover {
+    background: $turquoise;
+  }
+}
+
+@mixin border-style($width, $style, $color) {
+  border: $width $style $color;
+}
