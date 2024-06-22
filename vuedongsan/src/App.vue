@@ -6,10 +6,11 @@
     </div>
 
     <!-- v-if="조건식" : 조건식이 true일 때만 해당 HTML 보여줌 -->
-    <div class="modal" ref="modal" v-if="modalState">
+    <div class="modal" v-if="modalState">
       <div class="white-bg">
-        <h4>상세페이지임</h4>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, maxime</p>
+        <h4>{{ products[targetNum].title }}</h4>
+        <img :src="products[targetNum].image" :alt="products[targetNum].title" />
+        <p>{{ products[targetNum].content }}</p>
         <button
           type="button"
           @click="
@@ -24,21 +25,21 @@
     </div>
 
     <div class="wrap">
-      <div v-for="(item, i) in products" :key="products[i].id">
-        <img :src="products[i].image" :alt="products[i].title" />
-        <h4 :style="titleStyles">{{ products[i].title }}</h4>
-        <p>{{ products[i].content }}</p>
-        <span>가격: {{ products[i].price }}원</span>
+      <div v-for="(item, i) in products" :key="item.id">
+        <img :src="item.image" :alt="item.title" />
+        <h4 :style="titleStyles">{{ item.title }}</h4>
+        <p>{{ item.content }}</p>
+        <span>가격: {{ item.price }}원</span>
         <!--                   
           @이벤트명="" 이런식으로 이벤트 바인딩
           ex) @click="", v-on:click="", @mouseover="" ..                  
         -->
         <div class="btn-wrap">
-          <button type="button" @click="increase(i)">허위매물 신고</button>
-          <button type="button" @click="activeModal">상세 페이지 보기</button>
+          <button type="button" :data-index="i" @click="increase">허위매물 신고</button>
+          <button type="button" :data-index="i" @click="activeModal">상세 페이지 보기</button>
         </div>
 
-        <span>신고 수: {{ products[i].declaration || 0 }}</span>
+        <span>신고 수: {{ item.declaration || 0 }}</span>
       </div>
     </div>
   </div>
@@ -53,6 +54,7 @@ export default {
   name: 'App',
   // 페이지 시작시 자동 함수 실행
   mounted() {
+    // 마운트 될 때 데이터 가져오기
     this.getDate().then((res) => {
       this.products = res.map((data) => {
         return { ...data, declaration: 0 };
@@ -62,7 +64,8 @@ export default {
   // 데이터 보관함
   data() {
     return {
-      modalState: false,
+      targetNum: 0, // 몇번째 products[index]를 눌렀는지 index를 저장
+      modalState: false, 
       menuList: ['Home', 'shop', 'About'],
       titleStyles: 'color: blue; font-size: 1.2rem; font-weight: 600',
       products: null,
@@ -70,20 +73,29 @@ export default {
   },
   // 함수 선언하는 공간
   methods: {
-    increase(i) {
+    increase(e) {
       /**
        * vue에서 함수 선언할 때 주의사항
        * - 함수 안에서 data 사용할 때 this를 사용해 접근
        */
-      this.products[i].declaration += 1;
+      // this.item.declaration += 1;
+      this.products[e.currentTarget.dataset.index].declaration++;
     },
-    activeModal() {
+    activeModal(e) {
       this.modalState = true;
+      
+      // 이벤트가 바인딩된 타겟의 dataset.index 속성에 접근해 해당 값을 data.targetNum에 세팅
+      this.targetNum = +e.currentTarget.dataset.index;            
     },
     async getDate() {
-      const res = await fetch('./src/db/data.json');
-      const data = await res.json();
-      return data;
+      this.products = 'Loading..';
+      try {
+        const res = await fetch('./src/db/data.json');
+        const data = await res.json();
+        return data;
+      } catch (error) {
+        this.progress = 'err' + error;
+      }
     },
   },
 };
@@ -116,6 +128,11 @@ export default {
     border-radius: 0.375rem;
     border: 1px solid #000;
     padding: 0.875em;
+
+    img {
+      width: 100%;
+    }
+
     button[type='button'] {
       border: none;
       position: absolute;
