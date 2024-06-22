@@ -1,8 +1,4 @@
 <template>
-  <div v-if="number === 1">안녕하세요1</div>
-  <!-- if문 연달아 여러개 쓰고싶을 경우 : v-else-if -->
-  <div v-else-if="number === 2">안녕하세요2</div>
-
   <div class="container">
     <div class="menu">
       <!-- vue의 HTML 반복문 : <태그 v-for="(순회 요소, index) in 반복 횟수 || 순회할 자료형 데이터" :key="key값"> -->
@@ -17,6 +13,9 @@
         <img :src="products[targetNum].image" :alt="products[targetNum].title" />
         <p>{{ products[targetNum].content }}</p>
         <span>가격 : {{ products[targetNum].price }} 원</span>
+
+        <Banner />
+
         <button
           type="button"
           @click="
@@ -25,10 +24,13 @@
             }
           "
         >
-          ❌
+          닫기
         </button>
       </div>
     </div>
+
+    <Banner />
+    <!-- <Banner></Banner> -->
 
     <div class="wrap">
       <div v-for="(item, i) in products" :key="item.id">
@@ -53,12 +55,18 @@
 </template>
 
 <script>
+import Banner from './components/Banner.vue';
+
 /**
  * 1. 자주 변경될 데이터들은 밑에 저장해놨다가
  * 2. {{데이터 바인딩}}
  */
 export default {
   name: 'App',
+  // import해온 컴포넌트 등록
+  components: {
+    Banner,
+  },
   // 페이지 시작시 자동 함수 실행
   mounted() {
     // 마운트 될 때 데이터 가져오기
@@ -114,6 +122,15 @@ export default {
   max-width: fit-content;
   margin: 0 auto;
   text-align: center;
+
+  .banner {
+    width: 100%;
+    background-color: #eee;
+    padding: 0.625em;
+    border-radius: 0.25em;
+    margin-top: 20px;
+  }
+
   .menu {
     background-color: darkslateblue;
     padding: 15px;
@@ -143,10 +160,9 @@ export default {
 
     button[type='button'] {
       border: none;
-      position: absolute;
-      right: 2%;
-      top: 2%;
       cursor: pointer;
+      padding: 10px 20px;
+      margin-top: 20px;
     }
   }
   .wrap {

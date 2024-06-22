@@ -94,3 +94,37 @@
     }
 
   ```
+
+- vue 컴포넌트 만들기
+
+  ```
+  1. vue파일 만들기
+  2. <template>에 축약할 HTML 넣기
+  3. name속성 설정하기
+  ```
+
+- 만든 컴포넌트 쓰는 법
+
+  ```
+  1. vue 컴포넌트 파일 import 해오고
+  2. components: {} 에 속성으로 등록하고
+  3. <쓴다/>
+  ```
+
+- 컴포넌트 사용 이유 
+  - 재사용성
+  - 코드 가독성  
+
+
+- (업데이트사항) 이제 컴포넌트.vue 이름은 귀찮게 2단어 이상으로 작명해야합니다 안그러면 에러로 잡아줌
+
+  DiscountBanner.vue 이런 식으로 2단어로 작명 잘하면 됩니다.
+  
+  싫으면 package.json 파일 열어서 "rules" 라는 항목에
+
+  ```json
+  "rules": {
+    "vue/multi-word-component-names": "off"
+  }
+  ```
+
