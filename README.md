@@ -48,7 +48,24 @@
 - vue 조건문
 
   ```javascript
-    v-if="조건식"// 값이 truthy, 조건식이 true일 때만 해당 HTML 보여줌
+  // 값이 truthy, 조건식이 true일 때만 해당 HTML 보여줌
+  <div v-if="조건식">안녕하세요</div>
+  ```
+
+  ```javascript
+  <>
+    <div v-if="1 === 2">안녕하세요</div>
+    // v-else 위에 있는 v-if가 참이 아니면 이걸 보여주세요~
+    <div v-else>바이바이</div>
+  </>
+  ```
+
+  ```javascript
+  <>
+    <div v-if="number === 1">안녕하세요1</div>
+    // if문 연달아 여러개 쓰고싶을 경우 v-else-if
+    <div v-else-if="number === 2">안녕하세요2</div>
+  </>
   ```
 
 - 동적인 UI 만드는 법
