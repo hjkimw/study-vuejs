@@ -46,15 +46,34 @@
   ```
 
 - vue 조건문
+
   ```javascript
     v-if="조건식"// 값이 truthy, 조건식이 true일 때만 해당 HTML 보여줌
   ```
 
-```
+- 동적인 UI 만드는 법
 
-동적인 UI 만드는 법
- 0. UI를 미리 만들어두고
- 1. UI의 현재 상태를 데이터로 저장해둠
- 2. 데이터에 따라 UI가 어떻게 보일지 작성
+  ```
+  0. UI를 미리 만들어두고
+  1. UI의 현재 상태를 데이터로 저장해둠
+  2. 데이터에 따라 UI가 어떻게 보일지 작성
+  ```
 
-```
+- 페이지 시작시 자동 실행 함수 `mounted()`
+
+  ```javascript
+
+  export default {
+    name: 'App',
+    // 페이지 시작시 자동 함수 실행
+    mounted() {
+      this.getDate().then((res) => {
+        this.products = res.map((data) => {
+          return { ...data, declaration: 0 };
+        });
+      });
+    },
+    ...
+    }
+
+  ```
