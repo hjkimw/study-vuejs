@@ -12,7 +12,7 @@
       <!-- 현재 요소의 id를 데이터 변경 요청 메세지와 함께 보냄 -->
       <button type="button" @click="$emit('increase', item.id)">허위매물 신고</button>
       <!-- true를 데이터 변경 요청 메세지와 함께 보냄 -->
-      <button type="button" @click="$emit('openModal', true)">상세 페이지 보기</button>
+      <button type="button" @click="$emit('openModal', [true, item.id])">상세 페이지 보기</button>
     </div>
 
     <span>신고 수: {{ item.declaration || 0 }}</span>
