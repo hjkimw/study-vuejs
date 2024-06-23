@@ -1,7 +1,7 @@
 @import 'fonts', 'variables';
 
-@mixin absoluteCenter {
-  position: absolute;
+@mixin positionCenter($type) {
+  position: $type;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

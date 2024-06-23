@@ -10,4 +10,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+@import '@styles/variables';
+
+.banner {
+  width: 100%;
+  background-color: $light-gray;
+  padding: 0.625em;
+  border-radius: 0.25em;
+  margin-top: 20px;
+}
+</style>

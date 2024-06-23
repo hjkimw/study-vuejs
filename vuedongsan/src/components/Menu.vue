@@ -16,4 +16,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '@styles/variables.scss';
+
+.menu {
+  background-color: $forestgreen;
+  padding: 15px;
+  border-radius: 5px;
+
+  & > a {
+    color: #fff;
+    padding: 10px;
+  }
+}
+</style>

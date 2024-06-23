@@ -31,4 +31,32 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '@styles/mixins.scss';
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  height: 80vh;
+  background-color: #fff;
+  display: block;
+  border-radius: 0.375rem;
+  border: 1px solid #000;
+  padding: 0.875em;
+  @include positionCenter(fixed);
+
+  .white-bg {
+    & > img {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  button[type='button'] {
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top: 20px;
+  }
+}
+</style>
