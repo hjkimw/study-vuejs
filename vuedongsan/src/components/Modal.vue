@@ -34,6 +34,9 @@ export default {
     modalState: Boolean,
     targetNum: Number,
   },
+  data() {
+    return {};
+  },
 };
 </script>
 

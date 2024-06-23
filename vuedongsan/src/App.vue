@@ -1,10 +1,11 @@
 <template>
   <div class="container">
     <Menu>child</Menu>
-    <!-- <자식 :데이터="데이터"> -->
-    <Modal :products="products" :modalState="modalState" :targetNum="targetNum" />
+    <!-- :products="products" :modalState="modalState" :targetNum="targetNum" -->
+    <Modal v-bind="{ products, modalState, targetNum }" />
     <Banner />
-    <Card :products="products" :activeModal="activeModal" />
+    <!-- <자식 :데이터="데이터"> -->
+    <Card v-bind="{ products, activeModal }" />
   </div>
 </template>
 

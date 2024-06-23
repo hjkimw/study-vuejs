@@ -245,20 +245,20 @@
   자식 컴포넌트에다가 만들어도 되잖음?
   A. 그래도 되긴 한데 해당 데이터가
   **부모도 쓰는 데이터라면**
-  부모 컴포넌트에 데이터를 만들어두셈   
+  부모 컴포넌트에 데이터를 만들어두셈  
   <img src="./image/props.png" width="200" />
 
   데이터를 하위 컴포넌트에다가 만들어도 상관은 없다.
   그런데 데이터를 쓰는 곳이 여러군데다?
 
-  그 여러군데 중에서 최상위 컴포넌트에 만드셈   
+  그 여러군데 중에서 최상위 컴포넌트에 만드셈  
   <img src="./image/props2.png" width="200" />
 
-  왜냐하면 데이터는 위로 전송하는 건 어렵다.   
+  왜냐하면 데이터는 위로 전송하는 건 어렵다.
 
   <img src="./image/props3.png" width="200" />
 
-  밑으로 전송하는 것은 props로 전송하면 되므로 간단하다.   
+  밑으로 전송하는 것은 props로 전송하면 되므로 간단하다.  
   <img src="./image/props4.png" width="200" />
 
   **데이터 만들땐 해당 데이터를 많은 컴포넌트들이 쓴다면 데이터 사용하는 곳들 중 최상위 컴포넌트에 만드셈 그래야 props로 쉽게 전송가능**
@@ -285,4 +285,35 @@
     왜냐면 데이터는 위로 전송하는게 복잡하고 추적이 어렵기 때문입니다.
 
     귀찮으면 그냥 모조리 App.vue에 저장해놓으셈 그것도 나쁘지 않습니다.
+  ```
+
+- props 보낼 때 다양한 자료형 입력가능
+
+  Array, Object   
+  <img src="./image/props5.png" width="500" />
+
+  Number, String   
+  <img src="./image/props6.png" width="500" />
+
+- v-bind로 객체로 묶어서 한번에 props 전송하기
+
+    <img src="./image/props7.png" width="500" />
+
+  다음과 같이 각 속성들 따로 따로 props로 전달할 필요 없이
+  <img src="./image/props8.png" width="500" />
+
+  `v-bind` 속성을 사용해 객체로 묶어서 props전송
+  <img src="./image/props9.png" width="500" />
+
+  객체에 있는 속성을 하나하나 일일히 꺼내서
+  props로 보낼 필요 없이 `v-bind`속성을 사용해
+  전송할 속성들을 객체로 묶어서 props로 전송해준다.
+
+  ```javascript
+
+  // before, props로 전송할 속성들을 각각 보냄
+  <Modal :products="products" :modalState="modalState" :targetNum="targetNum" />
+
+  // after, props로 전송할 속성들을 v-bind로 객체로 묶어서 보냄
+  <Modal v-bind="{ products, modalState, targetNum }" />
   ```
