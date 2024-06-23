@@ -1,5 +1,19 @@
 # 🐲 Vue
 
+- 설치
+
+  ```shell
+  npm install -g @vue/cli
+  ```
+
+  ```shell
+  vue create $프로젝트명
+  ```
+
+  ```shell
+  npm run serve
+  ```
+
 - 데이터 꽂아 넣을 때 `{{}}` 사용
 
 - HTML 속성에 데이터 바인딩 할 때 속성 왼쪽에 `:` 삽입
@@ -111,15 +125,15 @@
   3. <쓴다/>
   ```
 
-- 컴포넌트 사용 이유 
-  - 재사용성
-  - 코드 가독성  
+- 컴포넌트 사용 이유
 
+  - 재사용성
+  - 코드 가독성
 
 - (업데이트사항) 이제 컴포넌트.vue 이름은 귀찮게 2단어 이상으로 작명해야합니다 안그러면 에러로 잡아줌
 
   DiscountBanner.vue 이런 식으로 2단어로 작명 잘하면 됩니다.
-  
+
   싫으면 package.json 파일 열어서 "rules" 라는 항목에
 
   ```json
@@ -128,3 +142,152 @@
   }
   ```
 
+- `{{데이터바인딩}}`은 밑에 해당 data가 있어야 가능함
+
+#### props
+
+- 데이터는 한 곳에 보관함(보통 `App.vue` 컴포넌트 이런곳에)
+  그리고 필요하면 props로 전달 받아서 가져다 씀
+
+- 부모/자식 컴포넌트
+
+  - 상위 `App.vue` 컴포넌트는 **부모 컴포넌트**에 해당
+  - 하위 `Modal.vue` 컴포넌트는 **자식 컴포넌트**에 해당
+    ![props](./image/캡처-4.png)
+
+- 자식 컴포넌트가 부모가 갖고 있는 데이터를 쓰려면
+  **props**로 부모가 갖고 있는 데이터를
+  자식 한테 전송해야함
+
+- **props**로 자식에게 데이터 보내는 법 1.데이터 보내고, 2.등록하고, 3.쓰셈
+
+  - step 1. 밑에 데이터 골라서 보내셈
+
+    - vue에서 `:` 의 역할은 두 가지
+    - 클래스명 html의 기본 속성(attribute)에 데이터 바인딩할 때
+    - 자식 컴포넌트에 데이터 **props**로 전송할 때 `v-bind`와 동일한 문법
+
+    ```javascript
+    <자식 :데이터="데이터">
+
+    <Modal :products="products" :modalState="modalState" :targetNum="targetNum" />
+    ```
+
+  - step 2. 자식은 **props**로 받은거 등록
+
+    ```javascript
+    export default {
+      name: 'Modal',
+      /* 
+      props: {
+        데이터이름: 자료형이름,
+      },
+      */
+      props: {
+        products: Object,
+        modalState: Boolean,
+        targetNum: Number,
+      },
+    };
+    ```
+
+  - step 3. 쓰셈
+
+    ```html
+    <div class="modal" v-if="modalState">
+      <div class="white-bg">
+        <!-- 데이터에서 targetNum속성 값에 해당하는 index 요소에 접근해 각 속성을 바인딩 -->
+        <h4>{{ products[targetNum].title }}</h4>
+        <img :src="products[targetNum].image" :alt="products[targetNum].title" />
+        <p>{{ products[targetNum].content }}</p>
+        <span>가격 : {{ products[targetNum].price }} 원</span>
+
+        <button
+          type="button"
+          @click="
+            () => {
+              // this.$root로 상위 컴포넌트 data에 접근해서 제어
+              this.$root.modalState = false;
+            }
+          "
+        >
+          닫기
+        </button>
+      </div>
+    </div>
+    ```
+
+  - (주의) props는 read-only임 받아온거 수정하면 큰일남
+
+    ```html
+    <button
+      type="button"
+      @click="
+            () => {
+               /* pops로 받아온 modalState를 조작하려고 함 */
+              modalState = false;
+            }
+          "
+    >
+      닫기
+    </button>
+    ```
+
+  1 . 부모 데이터를 자식이 쓰고싶을 때 쓰는게 props
+  2 . props 전송하려면 위에 3-step 절차로 진행
+  3 . props로 받아온건 read-only라서 조작 불가
+
+  재사용성을 고려해서 컴포넌트를 제작
+
+- 데이터 저장 팁
+
+  Q. 애초에 자식에서 해당 데이터를 쓸거면
+  자식 컴포넌트에다가 만들어도 되잖음?
+  A. 그래도 되긴 한데 해당 데이터가
+  **부모도 쓰는 데이터라면**
+  부모 컴포넌트에 데이터를 만들어두셈
+  ![props](./image/props.png)
+
+  데이터를 하위 컴포넌트에다가 만들어도 상관은 없다.
+  그런데 데이터를 쓰는 곳이 여러군데다?
+
+  그 여러군데 중에서 최상위 컴포넌트에 만드셈
+  ![props](./image/props2.png)
+
+  왜냐하면 데이터는 위로 전송하는 건 어렵다.
+  ![props](./image/props3.png)
+
+  밑으로 전송하는 것은 props로 전송하면 되므로 간단하다.
+  ![props](./image/props4.png)
+
+  **데이터 만들땐 해당 데이터를 많은 컴포넌트들이 쓴다면 데이터 사용하는 곳들 중 최상위 컴포넌트에 만드셈 그래야 props로 쉽게 전송가능**
+
+<br>
+
+- Q. 애초에 Modal.vue에다가 원룸들, 누른거 이런거 데이터 저장해두면 안되나?
+
+  ```
+
+
+    props가 귀찮기 때문에
+
+    App.vue에다가 만들지말고 애초에 Modal.vue 파일에다가 data(){} 열고
+
+    여기에 데이터들 저장해놓고 쓰면 안되냐는 소리입니다.
+
+    내가 이 데이터를 Modal.vue 안에서만 쓸 거라고 자신하면 거기다가 만드셔도 됩니다.
+
+    하지만 데이터를 만들 때 원칙이 있는데
+
+    "데이터를 사용하는 컴포넌트들 중 최상위 컴포넌트에다가 데이터를 만들어놔야함"
+
+    이걸 지켜서 만들어주시길 바랍니다.
+
+    왜냐면 데이터는 위로 전송하는게 복잡하고 추적이 어렵기 때문입니다.
+
+    귀찮으면 그냥 모조리 App.vue에 저장해놓으셈 그것도 나쁘지 않습니다.
+  ```
+
+```
+
+```
