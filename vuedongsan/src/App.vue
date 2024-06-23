@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <Menu>child</Menu>
-    <!-- :products="products" :modalState="modalState" :targetNum="targetNum" -->
+    <Menu></Menu>
     <Modal v-bind="{ products, modalState, targetNum }" />
     <Banner />
-    <!-- <자식 :데이터="데이터"> -->
-    <Card v-bind="{ products, activeModal }" />
+    <!-- data의 product를 for문으로 루프 돌리고 순회 요소, index인 itme, i 를 v-bind속성을 사용해 묶어서 props로 전달. -->
+    <Card v-for="(item, i) in products" :key="item.id" v-bind="{ item, i, activeModal }" />
   </div>
 </template>
 
@@ -66,7 +65,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .container {
   max-width: fit-content;
   margin: 0 auto;
@@ -114,21 +113,19 @@ export default {
       margin-top: 20px;
     }
   }
-  .wrap {
-    margin-top: 10px;
-    & > h2 {
-      margin-bottom: 10px;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-    & > p {
-      margin-bottom: 14px;
-    }
-    div {
-      & > img {
-        max-width: 400px;
-        margin-top: 40px;
-      }
+  margin-top: 10px;
+  & > h2 {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  & > p {
+    margin-bottom: 14px;
+  }
+  div {
+    & > img {
+      max-width: 400px;
+      margin-top: 40px;
     }
   }
 }
