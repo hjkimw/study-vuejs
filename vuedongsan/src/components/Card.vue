@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="card">
     <img :src="item.image" :alt="item.title" />
     <h4 :style="titleStyles">{{ item.title }}</h4>
     <p>{{ item.content }}</p>
@@ -41,5 +41,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  
+.card {
+  & > img {
+    width: 100%;
+  }
+}
 </style>

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'Menu',
+  name: 'MenuList',
   data() {
     return {
       menuList: ['Home', 'shop', 'About'],
