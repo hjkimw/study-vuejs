@@ -9,9 +9,10 @@
       ex) @click="", v-on:click="", @mouseover="" ..                  
     -->
     <div class="btn-wrap">
-      <!-- 데이터의 해당 index 번째 요소에 접근하게 index를 인자로 넘겨준다. -->
-      <button type="button" @click="increase(i)">허위매물 신고</button>
-      <button type="button" @click="activeModal(i)">상세 페이지 보기</button>
+      <!-- 현재 요소의 id를 데이터 변경 요청 메세지와 함께 보냄 -->
+      <button type="button" @click="$emit('increase', item.id)">허위매물 신고</button>
+      <!-- true를 데이터 변경 요청 메세지와 함께 보냄 -->
+      <button type="button" @click="$emit('openModal', true)">상세 페이지 보기</button>
     </div>
 
     <span>신고 수: {{ item.declaration || 0 }}</span>
@@ -29,18 +30,12 @@ export default {
   props: {
     item: Object,
     i: Number,
-    activeModal: Function,
   },
   methods: {
-    increase(i) {
-      /**
-       * vue에서 함수 선언할 때 주의사항
-       * - 함수 안에서 data 사용할 때 this를 사용해 접근
-       */
-
-      // $root에 접근해서 products 데이터에 i번째 요소의 declaration 속성을 조작
-      this.$root.products[i].declaration++;
-    },
+    /**
+     * vue에서 함수 선언할 때 주의사항
+     * - 함수 안에서 data 사용할 때 this를 사용해 접근
+     */
   },
 };
 </script>

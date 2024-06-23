@@ -8,17 +8,8 @@
       <p>{{ products[targetNum].content }}</p>
       <span>가격 : {{ products[targetNum].price }} 원</span>
 
-      <button
-        type="button"
-        @click="
-          () => {
-            // this.$root로 상위 컴포넌트 data에 접근해서 제어
-            this.$root.modalState = false;
-          }
-        "
-      >
-        닫기
-      </button>
+      <!-- Custom Event : 부모한테 메세지 보냄, this.$emit('작명',데이터); -->
+      <button type="button" @click="$emit('openModal', false)">닫기</button>
     </div>
   </div>
 </template>

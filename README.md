@@ -1,18 +1,20 @@
 # 🐲 Vue
 
-- 설치
+### 설치
 
-  ```shell
-  npm install -g @vue/cli
-  ```
+```shell
+npm install -g @vue/cli
+```
 
-  ```shell
-  vue create $프로젝트명
-  ```
+```shell
+vue create $프로젝트명
+```
 
-  ```shell
-  npm run serve
-  ```
+```shell
+npm run serve
+```
+
+### 문법
 
 - 데이터 꽂아 넣을 때 `{{}}` 사용
 
@@ -82,13 +84,13 @@
   </>
   ```
 
-- 동적인 UI 만드는 법
+### 동적인 UI 만드는 법
 
-  ```
-  0. UI를 미리 만들어두고
-  1. UI의 현재 상태를 데이터로 저장해둠
-  2. 데이터에 따라 UI가 어떻게 보일지 작성
-  ```
+```
+0. UI를 미리 만들어두고
+1. UI의 현재 상태를 데이터로 저장해둠
+2. 데이터에 따라 UI가 어떻게 보일지 작성
+```
 
 - 페이지 시작시 자동 실행 함수 `mounted()`
 
@@ -109,13 +111,13 @@
 
   ```
 
-- vue 컴포넌트 만들기
+#### vue 컴포넌트 만들기
 
-  ```
-  1. vue파일 만들기
-  2. <template>에 축약할 HTML 넣기
-  3. name속성 설정하기
-  ```
+```
+1. vue파일 만들기
+2. <template>에 축약할 HTML 넣기
+3. name속성 설정하기
+```
 
 - 만든 컴포넌트 쓰는 법
 
@@ -202,17 +204,8 @@
         <p>{{ products[targetNum].content }}</p>
         <span>가격 : {{ products[targetNum].price }} 원</span>
 
-        <button
-          type="button"
-          @click="
-            () => {
-              // this.$root로 상위 컴포넌트 data에 접근해서 제어
-              this.$root.modalState = false;
-            }
-          "
-        >
-          닫기
-        </button>
+        <!-- Custom Event : 부모한테 메세지 보냄, this.$emit('작명',데이터); -->
+        <button type="button" @click="$emit('openModal', false)">닫기</button>
       </div>
     </div>
     ```
@@ -220,17 +213,8 @@
   - (주의) props는 read-only임 받아온거 수정하면 큰일남
 
     ```html
-    <button
-      type="button"
-      @click="
-            () => {
-               /* pops로 받아온 modalState를 조작하려고 함 */
-              modalState = false;
-            }
-          "
-    >
-      닫기
-    </button>
+    <!-- pops로 받아온 modalState를 조작하려고 함 !! -->
+    <button type="button" @click="modalState = false;">닫기</button>
     ```
 
   1 . 부모 데이터를 자식이 쓰고싶을 때 쓰는게 props
@@ -289,15 +273,15 @@
 
 - props 보낼 때 다양한 자료형 입력가능
 
-  Array, Object   
+  Array, Object  
   <img src="./image/props5.png" width="500" />
 
-  Number, String   
+  Number, String  
   <img src="./image/props6.png" width="500" />
 
 - v-bind로 객체로 묶어서 한번에 props 전송하기
 
-    <img src="./image/props7.png" width="500" />
+  <img src="./image/props7.png" width="500" />
 
   다음과 같이 각 속성들 따로 따로 props로 전달할 필요 없이
   <img src="./image/props8.png" width="500" />
@@ -317,3 +301,81 @@
   // after, props로 전송할 속성들을 v-bind로 객체로 묶어서 보냄
   <Modal v-bind="{ products, modalState, targetNum }" />
   ```
+
+#### 자식이 부모데이터 바꾸고 싶으면 custom event
+
+- 부모로 부터 전달받은 props 데이터는 **read-only(읽기 전용 데이터)**라서 조작, 수정이 불가능해서 제약사항이 있었다.  
+  부모에게 전달받은 데이터를 수정하게 되면 부작용 사항이 생김  
+  <img src="./image/aa.png" width="240" />
+
+- 정확하게 말하자면 전달 받은 props가 아니라
+  부모에 있는 데이터를 수정하고 싶다면?
+  **custom event**를 사용해야한다.
+  <img src="./image/ce1.png" width="300" />
+
+  자식은 부모가 가진 데이터를 수정할 수 없다.
+  그래서 그냥 메세지를 보내는거  
+   <img src="./image/customEvent.png" width="300" />
+
+- 부모한테 메세지를 보내는 방법
+  ($어쩌구는 Vue만의 특별한 변수)
+
+  ```javascript
+  // 부모한테 메세지를 보냄
+  $emit('작명', 데이터);
+  ```
+
+  <img src="./image/ce2.png" width="500" />
+
+  - **Card.vue**
+
+  ```html
+  <!-- custom event -->
+  <button type="button" @click="$emit('increase', i)">허위매물 신고</button>
+  <button type="button" @click="$emit('openModal', true)">상세 페이지 보기</button>
+  ```
+
+  - **Modal.vue**
+
+  ```html
+  <!-- Custom Event : 부모한테 메세지 보냄, this.$emit('작명',데이터); -->
+  <button type="button" @click="$emit('openModal', false)">닫기</button>
+  ```
+
+- 부모가 메세지 수신할 때  
+  <img src="./image/ce3.png" width="500" />
+
+  - **App.vue**
+
+  ```html
+  <!-- custom event로 자식 컴포넌트에서 $emit호출로 인해 메세지가 수신되면 부모에서 해당 커스텀 이벤트 핸들러를 호출  -->
+  <!--custom event의 $event 변수에 $emit()의 두번째 인자로 전달된 값이 들어온다. -->
+  <Modal @openModal="modalState = $event" v-bind="{ products, modalState, targetNum }" />
+  ...
+  <!-- data의 product를 for문으로 루프 돌리고 순회 요소, index인 itme, i 를 v-bind속성을 사용해 묶어서 props로 전달. -->
+  <!-- custom event로 자식 컴포넌트에서 $emit호출로 인해 메세지가 수신되면 부모에서 해당 커스텀 이벤트 핸들러를 호출  -->
+  <!--custom event의 $event 변수에 $emit()의 두번째 인자로 전달된 값이 들어온다. -->
+  <Card
+    @openModal="modalState = $event"
+    @increase="products[$event].declaration++;
+  "
+    v-for="(item, i) in products"
+    :key="item.id"
+    v-bind="{ item, i, activeModal }"
+  />
+  ```
+
+- 부모가 가지고 있는 데이터를 자식이 직접 조작할 수 없으니
+  부모한테 메세지(`$emit('작명', 데이터)`)를 보냄
+  <img src="./image/ce4.png" width="500" />
+
+- 자식이 보낸 데이터는 커스템 이벤트의 `$event`변수에 담겨있음  
+  <img src="./image/ce5.png" width="500" />
+
+1. 자식이 부모 App.vue에 있는 데이터 변경하고 싶은뎅
+2. 변경해달라는 메세지만 보냄(custom event 문법으로), 메세지와 함께 데이터도 같이 보내기 가능
+3. 부모에게 메세지 보낼 땐 `$emit('작명', 데이터)`
+4. 부모가 메세지 수신할 땐 `<자식컴포넌트 @작명한거="">`  
+   <img src="./image/cea.png" width="500" />
+5. `$emit()`을 함수, methods 안에서 사용하려면 `this.$emit()`으로 접근
+   <img src="./image/ceb.png" width="500" />
